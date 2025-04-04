@@ -197,3 +197,156 @@ Semánticamente un proceso es un bucle infinito de instrucciones secuenciales. E
 ![image](media/waits.png)  
 
 Lista de sensibilidad: conjunto de señales que activan el proceso cuando se produce un cambio en alguna de ellas.
+
++ Proceso Explícitos: La lista de sensibilidad se declara explícitamente.
+    + Procesos
++ Procesos implícitos: La lista de sensibilidad se obtiene de la propia expresión:  
+    + Asignaciones concurrentes.
+    + Instanciación de componentes.
+
+```VHDL
+libary ieee;
+use ieee.std_logic_1164.all;
+entity simple is
+    port (a,b,c,d : in std_logic;
+    z: out std_logic);
+end simple;
+architecture logica of simple is
+signal x, y : std_logic;  --Declaración de señales
+begin
+    z <= x or y;  --Todos estos son procesos implícitos
+    x <= a and b;
+    y <= c xor d;
+end logica;
+``` 
+El orden en la declaración de los procesos no infiere en su ejecución.   
+
+### Instrucciones concurrentes
+```VHDL
+    z <= x or y;  --Todos estos son procesos implícitos
+    x <= a and b;
+    y <= c xor d;
+    k <= (a and not sel) or (b and sel);
+    h <= a when sel=‘0’ else b;
+``` 
+Una instrucción se ejecuta cuando cambia una de sus entradas.  
+La asignación de los nuevos valores se realiza una vez ejecutadas todas las instrucciones cuyas entradas han cambiado. Si como consecuencia del nuevo valor cambia alguna de las entradas de otra instrucción, se ejecuta dicha instrucción
+
+### Instrucciones secuenciales
+```VHDL
+process (selc, selb, a, b, c)
+begin
+    if (selc = ‘1’) then
+        x <= c;
+    elsif (selb = ‘1’) then
+        x <= b;
+    else
+        x <= a;
+    end if;
+end process;
+``` 
+```VHDL
+process (sel, a, b, c, d)
+begin
+    case sel is
+    when “00” =>
+        x <= a;
+    when “01” =>
+        x <= b;
+    when “10” =>
+        x <= c;
+    when others =>
+        x <= d;
+    end case;
+end process;
+``` 
+Las sentencias dentro de un proceso son evaluadas secuencialmente. Un proceso puede estar activo o inactivo. Típicamente un proceso posee una lista de sensibilidad: El proceso
+pasa a estar activo cuando cambia un valor de esta lista. También puede tener una o varias sentencias wait, que hacen que el proceso pase a inactivo. El tiempo avanza cuando el proceso pasa a inactivo.
+
+
+### Bucles secuenciales: LOOP
+Bucle infinito con condición  
+```VHDL
+while <condición> loop
+    --sentencias secuenciales
+end loop;
+```
+Bucle for iterativo  
+```VHDL
+for <identificador> in <rango> loop
+    --sentencias secuenciales
+end loop;
+```
+
+## Variables
+Almacenamiento local de un dato temporal.
++ Pueden ser de los mismos tipos de una señal (signal).
++ Visible solo en el interior de un proceso.
++ Se declara en el proceso.
++ Su asignación ( := ) es inmediata.
+```VHDL
+variable idle: std_logic := `0´;
+```
+```VHDL
+architecture comp of mux2latch is
+begin
+    mux: process (a, b, sel)
+    variable c : std_logic;
+    begin
+        if (sel=‘0’) then c:=a; -- inmediato
+        else c:=b;
+        end if;
+        x <=(x and (not en)) or (c and en);
+    end process;
+end comp;
+```
+Constante es una asociación de un nombre a un determinado valor  
+```VHDL
+constant pi: real := 3.1416
+```
+### Señales Vs. Variables
+|                 | Señales                    | Variables                        |
+|---------------|---------------------------|--------------------------------|
+| **Sintaxis**  | `destino <= fuente`       | `destino := fuente`           |
+| **Utilidad**  | modelan nodos físicos del circuito | representan almacenamiento local |
+| **Visibilidad** | global (comunicación entre procesos) | local (dentro de proceso) |
+| **Comportamiento** | se actualizan cuando avanza el tiempo (se suspende el proceso) | se actualizan inmediatamente |
+
+### Asignación de señales en buses
+```VHDL
+signal tmp: std_logic_vector(7 downto 0);
+--Todos los bits 
+    tmp <= “10100011”;
+    tmp <= x”A3”; -- VHDL 93
+--Un solo bit
+    tmp(7) <= '1';
+--Un rango de bits 
+    tmp(3 downto 0) <= “0011”;
+```
+```VHDL
+y <= others => '0';
+y <= ('0', '1', a xor b, a and b);
+y <= (3 => a xor b, 1 =>'1', 2 => '0', a and b);
+y <= y(2 dowto 0) &'0';
+```
+
+## Niveles de abstracción
+1. Funcional o Comportamental:
+    + Conjunto de instrucciones secuenciales.
+    + No se detallan relojes o retrasos.
+    + No siempre es sintetizable.
+2. RTL (Register Transfer Level):
+    + Es la entrada para la síntesis.
+    + Las operaciones se realizan en un ciclo de reloj especifico.
+    + No se detallan retrasos.
+3. Lógico o de puertas:
+    + Es la salida de la síntesis.
+    + Expresado en término de ecuaciones lógicas o puertas y elementos de una biblioteca (genérica o específica).
+    + Se incluye información de retraso para cada puerta. 
+
+![image](media/Abstraccion.png)  
+
+### RTL: Register Transfer Level
+Flujo de datos entre registros y bloques funcionales. Tienen en cuenta el ciclo de reloj. Independiente de la tecnología.  
+Definición del sistema en términos de:
++ registros, lógica combinacional y operaciones
