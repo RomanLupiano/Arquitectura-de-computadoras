@@ -17,12 +17,14 @@ architecture tb_mux2_1 of mux2_1_tb is
 
     signal x, y, sel, o: std_logic;
 begin
-    uut: mux2_1 port map(
+	-- uut: entity work.mux2_1(sent_concurrentes) port map( para la otra architecture
+    uut: entity work.mux2_1(proc_explicitos) port map(
         x => x, 
         y => y, 
         sel => sel, 
         o => o
     );
+
 
     process
     begin
@@ -32,6 +34,9 @@ begin
         wait for 10 ns;
 
         sel <= '1';
+        wait for 10 ns;
+        
+        sel <= '0';
         wait for 10 ns;
 
         wait;
