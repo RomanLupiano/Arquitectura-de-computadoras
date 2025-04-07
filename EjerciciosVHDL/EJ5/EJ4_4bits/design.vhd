@@ -2,18 +2,18 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 
-entity mux4_1 is
+entity mux4_4 is
 	port(
     		sel: in std_logic_vector(1 downto 0);
-            a: in std_logic;
-            b: in std_logic;
-            c: in std_logic;
-            d: in std_logic;
-    		o: out std_logic
+            a: in std_logic_vector(3 downto 0);
+            b: in std_logic_vector(3 downto 0);
+            c: in std_logic_vector(3 downto 0);
+            d: in std_logic_vector(3 downto 0);
+    		o: out std_logic_vector(3 downto 0)
     	);
-end mux4_1;
+end mux4_4;
 
-architecture senten_concurrentes of mux4_1 is
+architecture senten_concurrentes of mux4_4 is
 begin
 	process(sel, a, b, c, d)
     begin

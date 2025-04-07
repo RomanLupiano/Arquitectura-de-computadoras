@@ -1,0 +1,1 @@
+# Diseñe un circuito que realice la comparación entre dos operandos a y b de dos bits. El circuito posee dos salidas g y e de un bit. La salida g es 1 si a>b de lo contrario es 0 y e es 1 solo en el caso que a = b.
