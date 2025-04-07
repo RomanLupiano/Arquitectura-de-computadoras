@@ -1,0 +1,1 @@
+# Realice ejercicios 2) 3) y 4) trabajando con operandos de 4 bits.
