@@ -1,0 +1,1 @@
+# Instanciando el módulo realizado en 6), realice un sumador completo de 8 bits.
