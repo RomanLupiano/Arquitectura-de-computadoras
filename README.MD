@@ -349,4 +349,175 @@ y <= y(2 dowto 0) &'0';
 ### RTL: Register Transfer Level
 Flujo de datos entre registros y bloques funcionales. Tienen en cuenta el ciclo de reloj. Independiente de la tecnología.  
 Definición del sistema en términos de:
-+ registros, lógica combinacional y operaciones
++ registros, lógica combinacional y operaciones.
+
+---
+## Circuitos básicos: Multiplexores
+### Por asignación concurrente:
+Simple:
+```VHDL
+x <= (a and not sel) or (b and sel);
+```
+Condicional:
+```VHDL
+x <= a when sel='0' else
+    b;
+```
+Por selección:
+```VHDL
+with sel select
+x <= a when sel='0',
+    b when sel='1',
+    '0' when others;
+```
+### Por asignación secuencial dentro de procesos:
+Usando sentencias secuenciales: if-then-else.
+```VHDL
+process (selc, selb, a, b, c)
+begin
+    if (selc = ‘1’) then
+        x <= c;
+    elsif (selb = ‘1’) then
+        x <= b;
+    else
+        x <= a;
+    end if;
+end process;
+```
+Usando sentencias secuenciales: case.
+```VHDL
+process (sel, a, b, c, d)
+begin
+    case sel is
+        when “00” =>
+            x <= a;
+        when “01” =>
+            x <= b;
+        when “10” =>
+            x <= c;
+        when others =>
+            x <= d;
+    end case;
+end process;
+```
+## Circuitos básicos: Registros
+Existen dos métodos para crear flip-flops:
+- Instanciación del componente flip-flop desde una librería.
+- Utilizar un proceso sensible al flanco de reloj.
+
+### Instanciación de componentes
+```VHDL
+libary ieee;
+use ieee.std_logic_1164.all;
+entity ffd is
+    port (d, clk : in std_logic;
+    q: out std_logic);
+end ffd;
+use ieee.rtlpkg.all;
+architecture instffd of ffd is
+begin
+    flipflop: dff port map (d,clk,q);
+    -- componente dff definido en rtlpkg
+end instffd;
+--Ejemplo flip-flop D
+```
+
+### Proceso sensible al flanco de reloj
+```VHDL
+libary ieee;
+use ieee.std_logic_1164.all;
+entity ffd is
+    port (d, clk : in std_logic;
+    q: out std_logic);
+end ffd;
+architecture compffd of ffd is
+begin
+    flipflop: process (clk)
+    begin
+        if (clk'event and clk='1') then
+            q <= d;
+        end if;
+    end process;
+end compffd;
+--Ejemplo flip-flop D
+```
+
+El sintetizador infiere que debe crear registro para la señal q basándose en:
+- El elemento es únicamente sensible a la señal de reloj clock.
+- La expresión clock'event and clock='1' implica que la asignación de la señal se realiza en el flanco de subida de reloj.
+- Se sintetiza un elemento síncrono.
+- La especificación incompleta de la sentencia IF-THEN por faltar la cláusula ELSE implica que si la condición clock'event and clock='1' no se satisface (no hay flanco de subida), q debe mantener su valor hasta la siguiente asignación (memoria implícita).
+
+### Ejemplos básicos de codificación
+Flip Flop D con set asíncrono
+```VHDL
+ff_SA: process (clk, st)
+begin
+    if (st='1') then
+        output <= others => '1';
+    elsif (clk'event and clk='1') then
+        output <= input;
+    end if;
+end process;
+```
+Flip Flop D con reset síncrono
+```VHDL
+ff_RS: process (clk)
+begin
+    if (clk'event and clk='1') then
+        if (rst= '1') then
+            output <= others => '0';
+        else
+            output <= input;
+        end if;
+    end if;
+end process;
+```
+Flip Flop D con reset asíncrono
+```VHDL
+ff_SA: process (clk, rst)
+begin
+    if (rst='1') then
+        output <= others => '0';
+    elsif (clk'event and clk='1') then
+        output <= input;
+    end if;
+end process;
+```
+Contadores
+```VHDL
+PCont: process (clk, rst)
+begin
+    if (rst='1') then
+        cont <= (others => '0');
+    elsif (clk'event and clk='1') then
+        cont <= cont + 1;
+    end if;
+end process;
+```
+
+## Ejemplos de inferencia de buffer triestado
+Con asignación condicional
+```VHDL
+a_out <= a when enable_a='1' else 'Z';
+b_out <= b when enable_b='1' else 'Z';
+```
+Con un proceso
+```VHDL
+process (enable_a, a_out)
+begin
+    if (enable_a = ‘0’) then
+        a_out <= a;
+    else a_out <= ‘Z’;
+end process;
+```
+
+## Diseño jerárquico
+Componentes pequeños son utilizados por otros más grandes
+- Es fundamental para la reutilización de código
+- Permite mezclar componentes creados con distintos métodos de diseño: VHDL, Verilog, esquemáticos
+- Genera diseños más legibles y más portables
+- Necesario para estrategias de diseño top-down o botton-up
+
+![DiseñoJirarquico](media/Jerarquico.jpg)  
+
