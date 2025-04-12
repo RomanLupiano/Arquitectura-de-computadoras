@@ -519,5 +519,15 @@ Componentes pequeños son utilizados por otros más grandes
 - Genera diseños más legibles y más portables
 - Necesario para estrategias de diseño top-down o botton-up
 
-![DiseñoJirarquico](media/Jerarquico.jpg)  
+![DiseñoJirarquico](media/Jerarquico.jpg)   
+
+
+## Testbench
+Un diseño sin verificación no está completo:
+- Existen muchas maneras de verificar, la más utilizada es el banco de pruebas: TestBench
+- Simular básicamente es:
+    - Generar estímulos
+    - Observar resultados
+- Un TestBench es un código VHDL que automatiza estas dos operaciones
+- Los TestBenches no se sintetizan
 
