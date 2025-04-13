@@ -43,3 +43,9 @@ begin
     d(3 downto 2) <= a(1 downto 0) + b(1 downto 0);
 end;
 ```
+
++ arquitectura1: no veo el error.
++ arquitectura2: se asigna de manera concurrente distintos valores a x.
++ arquitectura3: 
+    se asigna de manera secuencial distintos valores a x, queda con la última asignacion (a xor b)
++ arquitectura4: no veo el error.
