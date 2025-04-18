@@ -15,6 +15,15 @@ end mux4_1;
 
 architecture senten_concurrentes of mux4_1 is
 begin
+	o <= a when (sel(1)='0' and sel(0)='0') else
+    	b when (sel(1)='0' and sel(0)='1') else
+        c when (sel(1)='1' and sel(0)='0') else
+        d;
+end senten_concurrentes;
+
+
+architecture proc_explicitos of mux4_1 is
+begin
 	process(sel, a, b, c, d)
     begin
     	case sel is
@@ -28,5 +37,4 @@ begin
             		o <= d;
         end case;
     end process;
-
-end senten_concurrentes;
+end proc_explicitos;

@@ -22,7 +22,7 @@ signal a, b, c, d, o: std_logic;
 signal sel: std_logic_vector(1 downto 0);
 
 begin
-	uut: mux4_1 port map (a=>a, b=>b, c=>c, d=>d, sel=>sel, o=>o);
+	uut: entity work.mux4_1(senten_concurrentes) port map (a=>a, b=>b, c=>c, d=>d, sel=>sel, o=>o);
 	
     process
     begin

@@ -2,16 +2,10 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 
--- Primero debemos escribir la entidad sin puertos
 entity or_unit_tb is 
 end or_unit_tb;
 
--- Escribimos el cuerpo de la unidad de testeo
 architecture beh of or_unit_tb is
-
--- Definimos la estructura declarativa relativa al tb
-
--- declaración de componentes
 component or_unit
 	port (
     	a: in std_logic_vector(2 downto 0);
@@ -19,7 +13,6 @@ component or_unit
     );
 end component;
 
--- declaración de señales (estímulos) del componente instanciado
 signal a: std_logic_vector(2 downto 0);
 signal o: std_logic;
 
@@ -34,13 +27,13 @@ begin
     tb: process
     begin
     
-    	a <= "010"; --> o debería verse 1
+    	a <= "010";
         wait for 10 ns;
-        a <= "001"; --> o debería verse 1
+        a <= "001";
         wait for 10 ns;
-        a <= "011"; --> o debería verse 1
+        a <= "011";
         wait for 10 ns;
-        a <= "000"; --> o debería verse 0
+        a <= "000";
         wait; 
         
     end process;
