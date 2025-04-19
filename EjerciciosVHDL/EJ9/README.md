@@ -44,8 +44,8 @@ begin
 end;
 ```
 
-+ arquitectura1: no veo el error.
++ arquitectura1: no veo el error. Inferencia de memoria?
 + arquitectura2: se asigna de manera concurrente distintos valores a x.
 + arquitectura3: 
     se asigna de manera secuencial distintos valores a x, queda con la última asignacion (a xor b)
-+ arquitectura4: no veo el error.
++ arquitectura4: no veo el error. Asignación parcial conflictiva?

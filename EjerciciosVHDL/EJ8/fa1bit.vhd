@@ -14,10 +14,6 @@ end fa1bit;
 
 architecture fa1bit_archi of fa1bit is
 begin
-	process(a, b, cin)
-    begin
-    	s <= (a xor b) xor cin;
-        cout <= (a and b) or ((a xor b) and cin);
-    end process;
-
+    s <= (a xor b) xor cin;
+    cout <= (a and b) or ((a xor b) and cin);
 end fa1bit_archi;

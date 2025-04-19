@@ -13,16 +13,6 @@ end comparador;
 
 architecture comparador_archi of comparador is
 begin
-	process(a, b)
-    begin
-    	if (a>b) 
-        	then g<='1'; 
-        else g<='0';
-        end if;
-        
-        if (a=b) 
-        	then e<='1'; 
-        else e<='0';
-        end if;
-    end process;
+	g <= '1' when a>b else '0';
+    e <= '1' when a=b else '0';
 end comparador_archi;
