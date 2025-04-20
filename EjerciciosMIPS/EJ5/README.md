@@ -15,19 +15,23 @@ En donde los parámetros g, h, i y j se corresponden con los registros comprendi
     addi $sp, $sp, -4   # Se hace un lugar en la pila para el $ra
     sw $ra, 0($sp)      # Se guarda el $ra
 
-    addi $sp, $sp, -8   # Se hacen dos lugares en la pila para guardar los temporales
-    sw $t0, 4($sp)      # Se guarda el $t0
-    sw $t1, 0($sp)      # Se guarda el $t1
+    addi $sp, $sp, -12   # Se hacen dos lugares en la pila para guardar los temporales
+    sw $t0, 8($sp)      # Se guarda el $t0
+    sw $t1, 4($sp)      # Se guarda el $t1
+    sw $s0, 0($sp)      # Se guarda el $t1
 
     add $t0, $a0, $a1   # t0=g+h;
     add $t1, $a2, $a3   # t1=i+j;
     sub $s0, $t0, $t1   # s0=t0-t1 => f = (g+h) - (i+j) 
     add $v0, $s0, $zero # Guarda el resultado en el registro de retorno
 
-    lw $t0, 4($sp)      # Se carga el $t0
-    lw $t1, 0($sp)      # Se carga el $t1
-    addi $sp, $sp, 8    # Se devuelven dos lugaren en la pila
+    lw $t0, 8($sp)      # Se carga el $t0
+    lw $t1, 4($sp)      # Se carga el $t1
+    lw $s0, 0($sp)      # Se carga el $t1
+    addi $sp, $sp, 12    # Se devuelven dos lugaren en la pila
 
     lw $ra, 0($sp)      # Se carga el $ra
     addi $sp, $sp, 4    # Se devuelve un lugar en la pila
+
+    jr $ra
 ```
