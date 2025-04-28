@@ -33,14 +33,14 @@ example:
     sw $ra, 0($sp)      # Se guarda el $ra
 
     addi $sp, $sp, -4   # Se hacen dos lugares en la pila para guardar los temporales
-    sw $s0, 0($sp)      # Se guarda el $t1
+    sw $s0, 0($sp)      # Se guarda el $s0
 
     jal suma
 
     sub $s0, $v0, $v1   # s0 = f = (g+h) - (i+j) 
     add $v0, $s0, $zero # Guarda el resultado en el registro de retorno
 
-    lw $s0, 0($sp)      # Se carga el $t1
+    lw $s0, 0($sp)      # Se carga el $s1
     addi $sp, $sp, 4    # Se devuelven dos lugaren en la pila
 
     lw $ra, 0($sp)      # Se carga el $ra

@@ -4,7 +4,7 @@ use IEEE.std_logic_1164.all;
 use IEEE.std_logic_arith.all;
 use IEEE.std_logic_unsigned.all;
 
-entity BancoRegistros is
+entity Registers is
 	port (
     	clk : in std_logic;
         reset : in std_logic;
@@ -16,7 +16,7 @@ entity BancoRegistros is
         data1_rd : out std_logic_vector(31 downto 0);
         data2_rd : out std_logic_vector(31 downto 0)
     );
-end BancoRegistros;
+end Registers;
 
 architecture BancoRegistros_arch of BancoRegistros is
 
