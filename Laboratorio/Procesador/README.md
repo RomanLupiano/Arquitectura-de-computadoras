@@ -53,7 +53,7 @@ main:
   and $s3, $t1, $t2     # $s3 ($19) toma el valor 1and2 = 0 
   and $s4, $t7, $t2     # $s4 ($20) toma el valor 3and2 = 2
   or $s5, $t1, $t2      # $s5 ($21) toma el valor 1or2 = 3
-  or $s6, $s0, $t2      # $s6 ($22) toma el valor 12or3 = 15
+  or $s6, $s0, $t2      # $s6 ($22) toma el valor 12or2 = 14
   slt $s7, $t1, $t2     # $s7 ($23) toma el valor 1<2 = 1
   slt $t8, $s0, $t2     # $t8 ($24) toma el valor 12<2 = 1
 end_program:
@@ -76,7 +76,7 @@ $s2 = 30
 $s3 = 0  
 $s4 = 2  
 $s5 = 3  
-$s6 = 15  
+$s6 = 14  
 $s7 = 1  
 $s8 = 1  
 ```
