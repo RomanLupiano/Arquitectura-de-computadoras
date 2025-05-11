@@ -55,7 +55,7 @@ main:
   or $s5, $t1, $t2      # $s5 ($21) toma el valor 1or2 = 3
   or $s6, $s0, $t2      # $s6 ($22) toma el valor 12or2 = 14
   slt $s7, $t1, $t2     # $s7 ($23) toma el valor 1<2 = 1
-  slt $t8, $s0, $t2     # $t8 ($24) toma el valor 12<2 = 1
+  slt $t8, $s0, $t2     # $t8 ($24) toma el valor 12<2 = 0
 end_program:
   j end_program
 ```
@@ -78,7 +78,7 @@ $s4 = 2
 $s5 = 3  
 $s6 = 14  
 $s7 = 1  
-$s8 = 1  
+$s8 = 0  
 ```
 
 
